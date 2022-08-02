@@ -57,10 +57,27 @@ You can have a properly functioning command, yet unintended output, based on whi
 
 find $HOME/1123/ -name *.txt
 
+
+________________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
 _________________________________________________________________________________________________________________________________________________________
+Using ONLY the find command, find all empty files/directories in directory /var and print out ONLY the filename (not absolute path), and the inode number,
+separated by newlines.
 
+Tip: When using the man pages, it is better to focus your search then to visually scan 1000+ lines of text. Combining the output with the grep command,
+possibly with its -A, -B, or -C options, can help drive context driven searches of those manual pages.
 
-
+find /var/ -empty -printf "%i %f\n"
 
 
 

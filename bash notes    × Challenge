@@ -59,14 +59,14 @@ find $HOME/1123/ -name *.txt
 
 
 ________________________________________________________________________________________________________________________________________________________
+Copy all files in the $HOME/1123 directory, that end in ".txt", and omit files containing a tilde "~" character, to directory $HOME/CUT.
+
+Use only the find and cp commands. You will need to utilize the -exec option on find to accomplish this activity.
+
+The find command uses BOOLEAN "!" to designate that it does not want to find any files or directories that follows.
 
 
-
-
-
-
-
-
+cp  $(find ~/1123/ -name \*.txt ! -name \*~.txt ) ~/CUT
 
 
 
@@ -80,4 +80,21 @@ possibly with its -A, -B, or -C options, can help drive context driven searches 
 find /var/ -empty -printf "%i %f\n"
 
 
+_________________________________________________________________________________________________________________________________________________________
+Using ONLY the find command, find all files on the system with inode 4026532575 and print only the filename to the screen,
+not the absolute path to the file, 
+separating each filename with a newline. Ensure unneeded output is not visible.
 
+Tip: The above inode is specific to this CTFd question and might not be in use on your Linux Opstation. Instead, 
+you can test your command on your Linux OpStation against inode 999.
+
+find -type f  /inode 4026532575
+
+
+________________________________________________________________________________________________________________________________________________________
+
+Using only the ls -l and cut Commands, write a BASH script that shows all filenames with extensions ie: 1.txt, etc., but no directories, in $HOME/CUT.
+Write those to a text file called names in $HOME/CUT directory.
+Omit the names filename from your output.
+
+ls -l $HOME/CUT | cut -d '.' -s -f1- | cut -d: -f2 | cut  -d " " -f2 > ~/CUT/names

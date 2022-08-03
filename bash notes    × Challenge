@@ -98,3 +98,5 @@ Write those to a text file called names in $HOME/CUT directory.
 Omit the names filename from your output.
 
 ls -l $HOME/CUT | cut -d '.' -s -f1- | cut -d: -f2 | cut  -d " " -f2 > ~/CUT/names
+
+

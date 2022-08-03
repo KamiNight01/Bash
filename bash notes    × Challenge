@@ -140,3 +140,4 @@ awk -F: -v "awk_var=$A" 'BEGIN {OFS=":"} {$2=awk_var} {print}' $HOME/PASS/shadow
 
 5. Using ONLY sed, write all lines from $HOME/passwd into $HOME/PASS/passwd.txt that do not end with either /bin/sh or /bin/false.
    sed '/\/bin\/false/d;/\/bin\/sh/d' $HOME/passwd > $HOME/PASS/passwd.txt
+  sed -e '/\/bin/sh/d' -e /\/bin/false/d' $HOME/passwd > $HOME/PASS/passwd.txt

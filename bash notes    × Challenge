@@ -99,4 +99,38 @@ Omit the names filename from your output.
 
 ls -l $HOME/CUT | cut -d '.' -s -f1- | cut -d: -f2 | cut  -d " " -f2 > ~/CUT/names
 
+________________________________________________________________________________________________________________________________________________________
+EXERCISES
+1.Write a basic bash script that greps ONLY the IP addresses in the text file provided (named StoryHiddenIPs in the current directory); sort them 
+  uniquely by number of times they appear.
+egrep -o '([0-9]{1,3}\.){3}[0-9]{1,3}' StoryHiddenIPs | sort | uniq -c | sort -nr
 
+
+
+2. Using ONLY the awk command, write a BASH one-liner script that extracts ONLY the names of all the system and user accounts that are not UIDs 0-3.
+   Only display those that use /bin/bash as their default shell.
+   The input file is named $HOME/passwd and is located in the current directory.
+   Output the results to a file called $HOME/SED/names.txt
+ awk 'NR==5, NR==44 {print NR,$0}' $HOME/passwd | awk  -F: '($7 == "/bin/bash") {print $1,$7}' | awk 'BEGIN {FS=" "} {print $2}' > $HOME/SED/names.txt
+ 
+
+
+3. Find all dmesg kernel messages that contain CPU or BIOS (uppercase) in the string, but not usable or reserved (case-insensitive)
+   Print only the msg itself, omitting the bracketed numerical expressions ie: [1.132775]
+dmesg | egrep  'BIOS|CPU' | egrep -vi 'reserved|usable' | cut -d"]" -f2-
+
+
+
+4.Write a Bash script using "Command Substitution" to replace all passwords, using openssl, from the file $HOME/PASS/shadow.txt with the MD5 encrypted 
+  password: Password1234, with salt: bad4u
+  Output of this command should go to the screen/standard output.
+  You are not limited to a particular command, however you must use openssl. Type man openssl passwd for more information.
+A=$(openssl passwd -1 -salt bad4u Password1234)
+awk -F: -v "awk_var=$A" 'BEGIN {OFS=":"} {$2=awk_var} {print}' $HOME/PASS/shadow.txt  <------ awk -F: -v "awk_var=$A" makes A from outside of the 
+                                                                                              awk command a local awk variable to use in the command.
+                                                                                              It does this because awk can only use variables established
+                                                                                              within itself.
+
+
+5. Using ONLY sed, write all lines from $HOME/passwd into $HOME/PASS/passwd.txt that do not end with either /bin/sh or /bin/false.
+   sed '/\/bin\/false/d;/\/bin\/sh/d' $HOME/passwd > $HOME/PASS/passwd.txt

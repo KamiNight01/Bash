@@ -1,13 +1,8 @@
-.spec.sh this is a test of of the arguments
-cat sepc.sh 
-#!/bin/bash
 
- echo "number if arguent passed: $#"
- echo " script name is $0"
- echo " the 2nd argument passed is $2"
- echo " pid of the current shell is : $$"
- echo " flags are set in the shell: $-"
- 
+
+https://www.baeldung.com/linux/bash-functions
+
+
  
  FUNCTION EXAMPLE 
 
@@ -106,3 +101,14 @@ fi
 test_shadow
 
 __________________________________________________________________________________________________________________________________________________
+
+.spec.sh this is a test of of the arguments
+cat sepc.sh 
+#!/bin/bash
+
+ echo "number if arguent passed: $#"
+ echo " script name is $0"
+ echo " the 2nd argument passed is $2"
+ echo " pid of the current shell is : $$"
+ echo " flags are set in the shell: $-"
+ 

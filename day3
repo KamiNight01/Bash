@@ -1,0 +1,92 @@
+.spec.sh this is a test of of the arguments
+cat sepc.sh 
+#!/bin/bash
+
+ echo "number if arguent passed: $#"
+ echo " script name is $0"
+ echo " the 2nd argument passed is $2"
+ echo " pid of the current shell is : $$"
+ echo " flags are set in the shell: $-"
+ 
+ 
+ FUNCTION EXAMPLE 
+
+ #!/bin/bash
+#this is a basic function 
+
+function print_somefun {
+echo Test function 
+}
+somefun () {
+echo This is some function
+}
+
+somefun
+
+
+
+
+ _____________________________________________________________________________________________________________________________________________________
+ 
+ 
+  (line counter in the  file tester)
+
+#!/bin/bash
+#this is a basic function 
+
+lines_in_file() {
+        cat $1 | wc -l
+}
+
+num_lines=$( lines_in_file $1 )
+
+echo This file $1  has $num_lines lines in it 
+echo Good day Madame
+~                              
+
+ ______________________________________________________________________________________________________________________________________
+ 
+ #!/bin/bash
+# this is a basic function
+
+function f1 {
+        echo Hello I\'m function 1
+        echo Bye dude ~!
+}
+function f2 { echo Hello I\'m function 2; echo Bye! Bye!;}
+
+f3 () {
+        echo Hello I\'m Function 3 tee hee !!
+}
+f4 () { echo hello I\'m function 4; echo Bye!! Hee!!; }
+
+f4
+f3
+f2
+f1
+ # different ways to do functions
+__________________________________________________________________________________________________________________________________
+ 
+ #!/bin/bash
+# this is a basic function
+
+fun=$( echo Pizza is super fun)
+function f1 {
+        echo "this is with double quotes: $fun"
+        echo 'this is with singe quotes: $fun'
+        echo this is with no quotes:\$fun
+        echo Bye dude ~!
+}
+
+f1
+
+______________________
+this is with double quotes: Pizza is super fun
+this is with singe quotes: $fun
+this is with no quotes:$fun
+Bye dude ~!
+
+
+# Different trypes of quotes
+
+___________________________________________________________________________________________________________________________________________________

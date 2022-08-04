@@ -167,6 +167,9 @@ Utilizing the rev and cut commands creatively.
 
 find $HOME -type f -name "*.bin" | rev | cut -d/ -f2- | rev | sort -u
 
+find $HOME -iname  "*.bin" -printf "%s %h\n" |sort -u
+
+find / -type f -iname "*.bin" | awk 'BEGIN{FS=OSF="/"}{NF=NF-1; print $0}
 
 _______________________________________________________________________________________________________________________________________________________
 
@@ -186,6 +189,13 @@ It is intended to read the last line once and store it in a variable.
 
 tail -1 $1 | awk -F: -v "name=$2" -v "id=$3" 'BEGIN {OFS=":"} {$1=name} {$3=id} {$4=id} {$6="/home/"name} {$7="/bin/bash"} {print}' >> $1
 
+name = $2
+ugid = $3
+file = $1
+cmd=$(tail -1 $file)
+echo $cmd |awk -F: -v "awkname=$name" -v "awkguid=$guid" 'BEGIN{OSF=":"} 
+{$1=awkname} {$3=awkguid} {$4=awkguid} {$6="/home/"awkname}
+{$NF="/bin/bash"} {print $0}' >> $file
 
 ____________________________________________________________________________________________________________________________________________________
 

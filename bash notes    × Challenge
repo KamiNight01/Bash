@@ -141,3 +141,126 @@ awk -F: -v "awk_var=$A" 'BEGIN {OFS=":"} {$2=awk_var} {print}' $HOME/PASS/shadow
 5. Using ONLY sed, write all lines from $HOME/passwd into $HOME/PASS/passwd.txt that do not end with either /bin/sh or /bin/false.
    sed '/\/bin\/false/d;/\/bin\/sh/d' $HOME/passwd > $HOME/PASS/passwd.txt
   sed -e '/\/bin/sh/d' -e /\/bin/false/d' $HOME/passwd > $HOME/PASS/passwd.txt
+  
+  _____________________________________________________________________________________________________________________________________________________
+  
+
+  -------------ACTIVITY ------------------
+  
+  
+1. Using find, find all files under the $HOME directory with a .bin extension ONLY.
+Once the file(s) and their path(s) have been found, remove the file name from the absolute path output.
+Ensure there is no trailing / at the end of the directory path when outputting to standard output.
+You may need to sort the output depending on the command(s) you use.
+Tip: For stripping the filename out of the output, there are different ways that this can be accomplished based on what you have learned so far.
+
+Utilizing -printf options on find.
+Utilizing awk to manipulate the fields. This may leave the trailing / if you don't take that into account.
+Utilizing the rev and cut commands creatively.
+
+
+
+
+find $HOME -type f -name "*.bin" | rev | cut -d/ -f2- | rev | sort -u
+
+find $HOME -iname  "*.bin" -printf "%s %h\n" |sort -u
+
+find / -type f -iname "*.bin" | awk 'BEGIN{FS=OSF="/"}{NF=NF-1; print $0}
+
+_______________________________________________________________________________________________________________________________________________________
+
+2. Write a script which will copy the last entry/line in the passwd-like file specified by the $1 positional parameter
+Modify the copied line to change:
+User name to the value specified by $2 positional parameter
+Used id and group id to the value specified by $3 positional parameter
+Home directory to a directory matching the user name specified by $2 positional parameter under the /home directory
+The default shell to `/bin/bash'
+Append the modified line to the end of the file
+Tip: awk provides the simplest method for completing this activity. Refer back to your notes on "09 - BASH Activity" 
+if you are in need of starting point on this activity.
+
+Note: The contents of the passwd-like file will be randomly generated on each submission. 
+It is intended to read the last line once and store it in a variable.
+
+
+tail -1 $1 | awk -F: -v "name=$2" -v "id=$3" 'BEGIN {OFS=":"} {$1=name} {$3=id} {$4=id} {$6="/home/"name} {$7="/bin/bash"} {print}' >> $1
+
+name = $2
+ugid = $3
+file = $1
+cmd=$(tail -1 $file)
+echo $cmd |awk -F: -v "awkname=$name" -v "awkguid=$guid" 'BEGIN{OSF=":"} 
+{$1=awkname} {$3=awkguid} {$4=awkguid} {$6="/home/"awkname}
+{$NF="/bin/bash"} {print $0}' >> $file
+
+____________________________________________________________________________________________________________________________________________________
+
+3. Find all executable files under the following four directories:
+/bin
+/sbin
+/usr/bin
+/usr/sbin
+Sort the filenames with absolute path, and get the md5sum of the 10th file from the top of the list.
+Tip: In the below example, you can see the different uses of md5sum. 
+While not wrong, the first command is hashing the string output of the the find command. 
+In the second, md5sum is hashing the file contents of the given file, which is what is intended for this activity. 
+You can also tell the second method hashed the file as the file name is listed in the hash output; the first only lists a hyphen indicating a 
+string was hashed. For this activity, to provide md5sum with the 10th file of the sorted output, it is recommended to use Command Subtitution.
+
+[chris@localhost ~]$ find /etc -maxdepth 1 -name passwd | md5sum
+9231fb35b4431d59eae53a8c0d673231  -
+[chris@localhost ~]$ md5sum /etc/passwd
+62f5fa5100adcee3305cf979b5734a3e  /etc/passwd
+
+
+md5sum $(find /bin  /sbin /usr/bin /usr/sbin -type f -executable | sort |head -10 | tail -1  ) | cut -d/ -f1
+
+_____________________________________________________________________________________________________________________________________________________
+
+Using any BASH command complete the following:
+
+4>Sort the /etc/passwd file numerically by the GID field.
+For the 10th entry in the sorted passwd file, get an md5 hash of that entry’s home directory.
+Output ONLY the MD5 hash of the directory's name to standard output.
+Note: Since we are dealing with a directory, which is both a string and an absolute path, it matters how we get the md5sum of our intended output.
+
+[chris@localhost ~]$ md5sum /home/chris
+md5sum: /home/chris: Is a directory
+In the above example, an error is returned because we are applying the directory /home/chris as the first argument of the above command. 
+Since /home/chris is a directory, likely with additional files within it, we cannot assign this as an argument. However,
+we have the string /home/chris as STDIN for a command, as seen in the below example.
+[chris@localhost ~]$ echo "/home/chris" | md5sum
+fd1a05901ce7150f82abd7f7d76f2827  -
+
+
+sort -t: -k4n /etc/passwd |awk 'NR==10 {print}' |cut -d: -f6| md5sum |cut -d'-' -f1
+
+
+_________________________________________________________________________________________________________________________________________________________
+
+5.Write a script which will find and hash the contents 3 levels deep from each of these directories: /bin /etc /var
+Your script should:
+Exclude named pipes. These can break your script.
+Redirect STDOUT and STDERR to separate files.
+Determine the count of files hashed in the file with hashes.
+Determine the count of unsuccessfully hashed directories.
+Have both counts output to the screen with an appropriate title for each count.
+Example Output:
+
+Successfully Hashed Files: 105
+Unsuccessfully Hashed Directories: 23
+
+
+#!/bin/bash 
+
+md5sum $(find /bin /etc /var -maxdepth 3) >output.txt 2>errfile.txt
+A=$(wc -l < output.txt)
+grep "directory" errfile.txt > dirfile.txt
+B=$(wc -l < dirfile.txt)
+
+
+echo "Successfully Hashed Files: $A"
+echo "Unsuccessfully Hashed Directories: $B"
+
+_________________________________________________________________________________________________________________________________________________________
+

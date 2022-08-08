@@ -35,3 +35,197 @@ function q1()
 cat /etc/passwd |awk -F: '{print $1}'
 
 _________________________________________________________________________________________________________________________________________________________
+Create a script that will perform the following actions:
+
+Print to standard output all usernames from the file path specified by the parameter filename sorted ascending numerically by user id.
+The file will be in the format of /etc/passwd
+function q1()
+{
+  #Valid Variables are:
+  filename=$1
+  #Your code here
+}
+
+function q1()
+{
+  #Valid Variables are:
+  filename=$1
+ cut -d: -f1,3 $filename | sort -n -t ":" -k2 | cut -d: -f1
+}
+
+
+ cat $filename | cut -d':' -f1-3 |sort -n -k3 -t : | cut -d':' -f1
+________________________________________________________________________________________________________________________________________________________
+4.Create a script that will perform the following actions:
+
+Print to standard output the total number of files in the directory specified by dirname.
+If the directory does not exist, print 'Invalid Directory'
+The count excludes the '.' and '..' pseudo-directories.
+function q1()
+{
+  #Valid Variables are:
+  dirname=$1
+  #Your code here
+}
+
+
+function q1()
+{
+  #Valid Variables are:
+  dirname=$1
+ ls $dirname | wc -l
+}
+
+_________________________________________________________________________________________________________________________________________________________
+5.Create a script that will perform the following actions:
+
+Delete all files contained in the directory specified by dirdel
+Also delete the directory specified by dirdel
+function q1()
+{
+  #Valid Variables are:
+  dirdel=$1
+  #Your code here
+}
+
+function q1()
+{
+  #Valid Variables are:
+  dirdel=$1
+ rm -v  $1
+   rm -rf $1
+}
+
+_________________________________________________________________________________________________________________________________________________________
+Create a script that will perform the following actions:
+
+Create a file specified by the name newfile.
+Set the file modified date to the value specified in filedate and time to '1730'. NOTE: filedate contains only a valid date in YYYYMMDD format, not a time.
+function q1()
+{
+  #Valid Variables are:
+  newfile=$1
+  filedate=$2
+  #Your code here
+}
+
+
+
+function q1()
+{
+  #Valid Variables are:
+  newfile=$1
+  filedate=$2
+  touch newfile
+touch -t "$filedate"1730 $newfile
+
+}
+________________________________________________________________________________________________________________________________________________________
+
+Read the file specified by fname and perform an action based on the contents of the file:
+
+If contents are 0 to 9, print "single digit" to standard output.
+If contents are 10 to 99, print "double digit" to standard output.
+If contents are 100 to 999, print "triple digit" to standard output.
+Otherwise, print "Error" to standard output.
+NOTE: There will only be one line of content in the file specified by fname.
+
+function q1()
+{
+  #Valid Variables are:
+  fname=$1
+  #Your code here
+}
+
+
+function q1()
+{
+  #Valid Variables are:
+  fname=$1
+A=$(cat $fname)  
+if [[ $A -ge 0 && $A -lt 10 ]]; then
+                echo single digit
+        elif [[ $A -ge 10 && $A -lt 99 ]];
+        then
+                echo double digit
+        elif [[ $A -ge 100 && $A -lt 999 ]];
+        then
+                echo "triple digit"
+        else
+                echo Error
+fi
+}
+
+________________________________________________________________________________________________________________________________________________________
+Copy all lines from the file specified by src variable to the file specified by dst variable which DO NOT contain the text specified by match variable.
+
+function q1()
+{
+  #Valid Variables are:
+  src=$1
+  dst=$2
+  match=$3
+  #Your code here
+}
+
+
+
+function q1()
+{
+  #Valid Variables are:
+  src=$1
+  dst=$2
+  match=$3
+  grep -v $3 $src > $dst
+}
+
+_________________________________________________________________________________________________________________________________________________________
+Terminate the process that has the randomly assigned name specified by procname variable. procname does not contain path information.
+
+function q1()
+{
+  #Valid Variables are:
+  procname=$1
+  #Your code here
+}
+
+
+function q1()
+{
+  #Valid Variables are:
+  procname=$1
+  pkill -f $1
+}
+
+_________________________________________________________________________________________________________________________________________________________
+
+Create a sorted full-path list of all files in the directory dirpath that were modified within the previous day. Directories should not be included in the output. Print the list to the screen, one item per line.
+
+NOTE: The full paths to files should be in your output. (i.e. /etc/passwd would be included)
+
+NOTE: Directory entries should not be included. (i.e. /etc would NOT be included)
+
+function q1()
+{
+  #Valid Variables are:
+  dirpath=$1
+  #Your code here
+}
+
+function q1()
+{
+  #Valid Variables are:
+  dirpath=$1
+  find $dirpath -type f -mtime -1  | sort 
+}
+
+
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+
+
+
+

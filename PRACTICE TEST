@@ -1,0 +1,37 @@
+Create a script that will perform the following actions:
+
+Replace every instance of 'cat' in "infile" with 'dog'.
+Replace every instance of 'Navy' in "infile" with 'Army'.
+Replacements are case-sensitive.
+Write the output to the file specifed by the variable 'outfile'.
+function q1()
+{
+  #Valid Variables are:
+  infile=$1
+  outfile=$2
+  #Your code here
+}
+
+
+function q1()
+{
+  #Valid Variables are:
+  infile=$1
+  outfile=$2
+ sed -e 's/cat/dog/g' -e 's/Navy/Army/g' $infile > $outfile
+
+}
+__________________________________________________________________________________________________________________________________________________________
+Create a script that will print to standard output all user names from the /etc/passwd file.
+
+function q1()
+{
+  #Valid Variables are:
+  #none
+  #You code here
+}
+
+
+cat /etc/passwd |awk -F: '{print $1}'
+
+_________________________________________________________________________________________________________________________________________________________

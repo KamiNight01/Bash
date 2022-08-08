@@ -308,6 +308,20 @@ if [[ "$D" == "6 received" ]]; then
 else
    echo "failure";
 fi
+
+
+
+
+
+#!/bin/bash
+
+A=$(ip route | grep 'default.*[[:digit:]]' | awk '{print $2}')
+B=$(which ping)
+C= " 0% packet loss"
+echo $A \n $B \n $C
+D=$($B -c 6 $A | grep -Eo "$C")
+echo $D
+
 _______________________________________________________________________________________________________________________
 Create the following files in a new directory you create $HOME/ZIP:
 file1 will contain the md5sum of the text 12345
@@ -326,8 +340,23 @@ echo "abcdef" |md5sum | cut -d" " -f1 >  ~/ZIP/file3
 cd $HOME/ZIP
 zip file.zip file1 file2 file3
 tar -czf file.tar.gz file.zip
-__________________________________________________
-Design a basic FOR Loop that iteratively alters the file system and user entries in a passwd-like file for new users: LARRY, CURLY, and MOE.
+
+
+ curl cht.sh /tar
+
+
+mkdir $HOME/ZIP
+echo "12345" |md5sum | cut -d" " -f1 > ~/ZIP/file1
+echo "6789" |md5sum | cut -d" " -f1 > ~/ZIP/file2
+echo "abcdef" |md5sum | cut -d" " -f1 >  ~/ZIP/file3
+zip -j $HOME/ZIPfile.zip $HOME/ZIP/file{1,2,3}
+tar -czf $HOME?ZIP/file.tar.gz -C $HOME/ZIP/file/zip
+
+
+________________________________________________________________________________________________________________________________________________
+
+
+19.Design a basic FOR Loop that iteratively alters the file system and user entries in a passwd-like file for new users: LARRY, CURLY, and MOE.
 Each user should have an entry in the $HOME/passwd file
 The userid and groupid will be the same and can be found as the sole contents of a file with the user's name in the $HOME directory (i.e. $HOME/LARRY.txt might contain 123)
 The home directory will be a directory with the user's name located under the $HOME directory (i.e. $HOME/LARRY)
@@ -343,3 +372,50 @@ do
 mkdir $HOME/$value
 echo $value:x:$(cat $HOME/$value.txt):$( cat $HOME/$value.txt):root:'$HOME'/$value:/bin/bash >> $HOME/passwd
 done
+
+
+rootline=$( heac -1 $HOME/passwd
+for x in {LARRY,CURLY,MOE} ; do
+        myuid=(cat $HOME/$x.txt)
+        mkdir  $home/$x
+        echo $rootline | awk -F: -v uu=$x -v ii=$xmyuid 'BEGIN{OFS=":"}{$1=uu;$3=ii;$4=ii;$6="$HOME/$uu}{print $0}' >> $HOME/passwd  
+        # creating a line then using awk to set the 3
+        #different variablest that are declared and need to be changed then started with 
+        #begin then set the OFS so that you can begin settin the new id's then appending it back onto $HOME/passwd 
+        done
+
+_______________________________________________________________________________________________________________________________________________________
+ 20.Write a bash script that will find all the files in the /etc directory, and obtains the octal permission of those files. The stat command will be useful for this task.
+Depending how you go about your script, you may find writing to the local directory useful. What you must seperate out from the initial results are the octal permissions of 0-640 and those equal to and greater than 642, ie 0-640 goes to low.txt, while 642 is sent to high.txt.
+Have your script uniquely sort the contents of the two files by count, numerically-reversed, and output the results, with applicable titles, to the screen. An example of the desired output is shown below.
+NOTE: There is a blank line being printed between the two sections of the output below.
+EXAMPLE OUTPUT:
+
+Files w/ OCTAL Perm Values 642+:
+    424 777
+    365 644
+     15 755
+  
+Files w/ OCTAL Perm Values 0-640:
+      4 640
+      3 440
+      2 600
+      1 444
+
+----
+#!/bin/bash
+find /etc -type f -exec stat -c '%a' {} \; > ./A 2>/dev/null
+for x in $(cat ./A) ; do
+        if [[ $x -le 640 ]]; then
+          echo $x >> ./less2
+        elif [[ $x -ge 642 ]]; then
+          echo $x >> ./more2
+        fi
+done
+echo 'Files w/ OCTAL Perm Values 642+:'
+cat ./more2 |sort |uniq -c |sort -nr
+echo
+echo 'Files w/ OCTAL Perm Values 0-640:'
+cat ./less2 |sort |uniq -c |sort -nr
+
+

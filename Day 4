@@ -2,6 +2,189 @@
 ssh bandit0@bandit.labs.overthewire.org -p 2220
 
 
+
+
+
+
+#!/bin/bash
+function getuserchoice ()
+{
+    echo "Make a choice [1,2,3]:"         <------this shows the user a prompt
+    read userchoice
+    case $userchoice in                   <------ a comparison of instances
+        (1) echo one ;;
+        (2) echo two ;;
+        (3) echo three
+        (*) echo other ;;
+    esac                                  <------ close case statement with "esac"
+}
+
+getuserchoice
+
+
+
+echo /home/student | md5sum          <-------- turns the name of a directory to the md5 hash
+
+
+echo $$  <---------- PID of the shell
+echo $0 <--------- Name of script
+
+if [[ $# -lt 3 ]]; then
+echo "usage: bash $0 arg1 arg2 arg3";
+else
+echo $1 $2 $3
+fi
+
+
+
+LOOPS: WHILE, FOR, UNTIL
+
+WHILE   <------- While the statement is true continue the loop. Stop the loop when it is false. It will continue until there is a false or break statement
+#!/bin/bash
+while [ what test ]
+do
+    commands
+done
+
+
+counter=1
+while [[counter -le 10 ]
+do
+    echo $counter
+    counter=`expr $counter + 1`    <------ not a single quote
+done
+
+
+
+
+
+
+FOR    <------- for every item in the list apply the command to it
+#!/bin/bash
+for variable in list
+do
+    commands
+done
+
+
+#!/bin/bash
+names='Mike Lola Kim Dug Sherrly Vince Deez'
+for name in $names
+do
+    echo $names
+done
+echo "All done"
+
+
+for name in $names
+do
+    mkdir $HOME/$names       <------- makes a home directory for each name
+done
+echo "All done"
+
+
+
+
+
+UNTIL   <------- Execute the command until the result is true
+#!/bin/bash
+until test
+do
+    commands
+done
+
+
+
+#!/bin/bash
+a=0
+until [[ $a -gt 10 ]]
+do
+    echo $a
+    a='expr $a +1'\
+done
+
+
+
+
+
+BREAK AND CONTINUE
+break <----- exit the loop
+continue <------ skip that iterattion of the loop and continue on to the next one
+
+
+RANGE
+for value in {1..20..2}   <------- count up by 2, starting at 1, without passing 20
+do
+    echo $value
+done
+
+
+
+
+SELECT
+#!/bin/bash
+select var in list
+do
+    commands
+done
+
+
+#!/bin/bash
+names='Nicki Jamie Rollie Rotty Nkenesliw Sam Folkawrr Quit'
+select name in $names
+do
+    if [[ $name == 'Quit" ]]
+    then
+        break
+    fi
+    echo "Hello $name"
+done
+echo "Bye quitter"
+PRACTICE QUESTIONS
+Design a script that detects the existence of directory: $HOME/.ssh
+Upon successful detection, copies any and all files from within the directory $HOME/.ssh to directory $HOME/SSH and produce no output. You will need to create $HOME/SSH.
+Upon un-successful detection, displays the error message "Run ssh-keygen" to the user.
+#!/bin/bash
+    if [[ -d /$HOME/.ssh ]]
+        then
+            mkdir /$HOME/SSH/
+            cp  /$HOME/.ssh/* $HOME/SSH/
+    else
+        echo 'Run ssh-keygen'
+    fi  
+    
+    
+    
+    Write a script that determines your default gateway ip address. Assign that address to a variable using command substitution.
+NOTE: Networking on the CTFd is limited for security reasons. ip route and route are emulated. Use either of those with no switches.
+Have your script determine the absolute path of the ping application. Assign the absolute path to a variable using command substitution.
+Have your script send six ping packets to your default gateway, utilizing the path discovered in the previous step, and assign the response to a variable using command substitution.
+Evaluate the response as being either successful or failure, and print an appropriate message to the screen.
+    
+    A=$(ip route | head -1 | cut -d" " -f3)
+B=$(which ping)
+C=$($B -c 6 $A)
+D=$(echo $C | tail -2 | head -1 | awk -F"packets transmitted" '{print $1}' | awk -F" " '{print $NF}')
+E=$(echo $C | tail -2 | head -1 | awk -F"received" '{print $1}' | awk -F" " '{print $NF}')
+if [[ $D == $E ]]; then
+   echo "successful"
+else
+   echo "failure"
+fi
+Create the following files in a new directory you create $HOME/ZIP:
+file1 will contain the md5sum of the text 12345
+file2 will contain the md5sum of the text 6789
+file3 will contain the md5sum of the text abcdef
+Create a zip file containing the three files above, without being stored inside a directory in the zip file. Name the zip file $HOME/ZIP/file.zip
+mkdir $HOME/ZIP
+cd $HOME/ZIP
+touch $HOME/ZIP/file{1,2,3}
+echo 12345 | md5sum | cut -d" " -f1 > file1
+echo 6789 | md5sum | cut -d" " -f1 > file2
+echo abcdef | md5sum | cut -d" " -f1 > file3
+zip file.zip file1 file2 file3
+tar -cvzf file.tar.gz file.zip
+
 Design a script that detects the existence of directory: $HOME/.ssh
 
 Upon successful detection, copies any and all files from within the directory $HOME/.ssh to directory $HOME/SSH and produce no output. You will need to create $HOME/SSH.
